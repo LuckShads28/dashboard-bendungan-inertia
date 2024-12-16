@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { useEffect, useState } from "react";
 import { DynamicBreadcrumb } from "@/resources/js/Pages/Dashboard/Components/dynamic-breadcrumb";
 import { BendunganWidget } from "./Components/bendungan-widget";
+import { Toaster } from "sonner";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -58,6 +59,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </header>
 
                 {children}
+
+                <Toaster />
             </SidebarInset>
         </SidebarProvider>
     );

@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('dam_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('dam_id')->constrained('dams');
-            $table->float('water_level');
+            $table->float('water_level')->default(0);
+            $table->float('water_height')->default(0);
+            $table->integer('threshold')->default(0);
+            $table->enum('door_status', ['open', 'close'])->default('close');
             $table->timestamps();
         });
     }

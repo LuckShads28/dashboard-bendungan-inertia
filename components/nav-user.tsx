@@ -93,8 +93,7 @@ export function NavUser({
                                 </div>
                             </div>
                         </DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        {/* TODO: toggle dark mode */}
+                        {/* <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                             <DropdownMenuItem>
                                 <BadgeCheck />
@@ -108,7 +107,7 @@ export function NavUser({
                                 <Bell />
                                 Notifications
                             </DropdownMenuItem>
-                        </DropdownMenuGroup>
+                        </DropdownMenuGroup> */}
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                             <LogOut />

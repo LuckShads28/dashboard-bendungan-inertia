@@ -21,14 +21,16 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { router } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { route } from "ziggy-js";
 import { Loader2 } from "lucide-react"; // Assuming you're using Lucide icons.
+import { Badge } from "@/components/ui/badge";
 
 type DamType = {
     id: number;
     name: string;
     mac_address: string;
+    status: string;
 };
 
 const DamPage = ({ dams }: { dams: DamType[] }) => {
@@ -83,19 +85,41 @@ const DamPage = ({ dams }: { dams: DamType[] }) => {
                                     </TableCell>
                                 </TableRow>
                             ) : (
-                                dams.map((dam, index) => (
+                                dams.map((dam) => (
                                     <TableRow key={dam.id}>
-                                        <TableCell>{dam.name}</TableCell>
-                                        <TableCell>{dam.mac_address}</TableCell>
-                                        <TableCell className="space-x-2">
-                                            <Button className="bg-yellow-600 hover:bg-yellow-700">
+                                        <TableCell className="w-1/2 overflow-hidden text-ellipsis whitespace-nowrap">
+                                            {dam.name}
+                                        </TableCell>
+                                        <TableCell className="w-fit whitespace-nowrap">
+                                            {dam.mac_address}
+                                        </TableCell>
+                                        <TableCell className="w-fit whitespace-nowrap">
+                                            <Badge
+                                                className={
+                                                    dam.status === "on"
+                                                        ? "bg-green-500"
+                                                        : "bg-red-500"
+                                                }
+                                            >
+                                                {dam.status}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="space-x-2 w-fit whitespace-nowrap">
+                                            <Link
+                                                href={route("dam.show", dam.id)}
+                                            >
+                                                <Button className="bg-indigo-500">
+                                                    View
+                                                </Button>
+                                            </Link>
+                                            <Button className="bg-yellow-600">
                                                 Edit
                                             </Button>
                                             <Button
                                                 // onClick={() =>
                                                 //     openDeleteDialog(user)
                                                 // }
-                                                className="bg-red-600 hover:bg-red-700"
+                                                className="bg-red-600"
                                             >
                                                 Delete
                                             </Button>

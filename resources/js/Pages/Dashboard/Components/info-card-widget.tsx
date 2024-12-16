@@ -12,7 +12,7 @@ export default function InfoCardWidget({
     data,
 }: {
     title: string;
-    data: number;
+    data: number | string;
 }) {
     return (
         <Card className="rounded-xl bg-muted/50">

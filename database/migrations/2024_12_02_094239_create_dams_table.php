@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('dams', function (Blueprint $table) {
             $table->id();
-            $table->string('dam_uuid');
+            $table->string('mac_address');
             $table->string('name');
-            $table->float("water_level")->default(0);
+            $table->text('address')->nullable();
+            $table->enum('status', ['on', 'off'])->default('off');
+            $table->enum('door_status', ['open', 'close'])->default('close');
+            $table->float('water_level')->default(0);
+            $table->float('water_height')->default(0);
+            $table->float('threshold')->default(100);
             $table->timestamps();
         });
     }

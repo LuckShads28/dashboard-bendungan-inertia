@@ -14,7 +14,12 @@ import { BendunganWidget } from "./Components/bendungan-widget";
 import Layout from "./Layout";
 import InfoCardWidget from "./Components/info-card-widget";
 
-const DashboardPage = () => {
+type DamInfo = {
+    damTotal: number;
+    damActive: number;
+};
+
+const DashboardPage = ({ damInfo }: { damInfo: DamInfo }) => {
     const [isDarkMode, setIsDarkMode] = useState(() => {
         const savedTheme = localStorage.getItem("darkMode");
         return savedTheme ? JSON.parse(savedTheme) : true; // Default to true (dark mode)
@@ -40,8 +45,14 @@ const DashboardPage = () => {
         <div className="flex flex-col flex-1 gap-4 m-4">
             <h1>Informasi Bendungan</h1>
             <div className="grid gap-4 auto-rows-min md:grid-cols-4">
-                <InfoCardWidget title="Jumlah Bendungan" data={2} />
-                <InfoCardWidget title="Bendungan Aktif" data={1} />
+                <InfoCardWidget
+                    title="Jumlah Bendungan"
+                    data={damInfo.damTotal}
+                />
+                <InfoCardWidget
+                    title="Bendungan Aktif"
+                    data={damInfo.damActive}
+                />
             </div>
             <hr />
             <div className="grid gap-4 auto-rows-min md:grid-cols-2">
