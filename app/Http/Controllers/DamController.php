@@ -59,6 +59,8 @@ class DamController extends Controller
                 return [
                     'water_height' => $log->water_height,
                     'water_level' => $log->water_level,
+                    'threshold' => $log->threshold,
+                    'door_status' => $log->door_status,
                     'created_at' => Carbon::parse($log->created_at)->format('H:i:s'), // Format time as "HH:mm"
                 ];
             });
