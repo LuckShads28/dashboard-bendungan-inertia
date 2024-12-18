@@ -13,17 +13,10 @@ class DamControllerApi extends Controller
     // Used for connecting or heartbeat
     public function connect(Request $request)
     {
-        $validation = Validator::make($request->all(), [
+        $request->validate([
             'name' => 'required',
-            'mac_address' => 'required|unique:dams,mac_addess',
+            'mac_address' => 'required|unique:dams,mac_address'
         ]);
-
-        if ($validation->fails()) {
-            return response()->json([
-                'message' => 'error',
-                'errors' => $validation->errors()
-            ], 422);
-        }
 
         $dam = Dam::firstOrCreate(
             ['mac_address' => $request->mac_address],
@@ -43,18 +36,11 @@ class DamControllerApi extends Controller
     // Used for updating sensor data
     public function update(Request $request)
     {
-        $validation = Validator::make($request->all(), [
+        $request->validate([
             'mac_address' => 'required',
             'water_level' => 'required|numeric',
-            'water_height' => 'required|numeric',
+            'water_height' => 'required|numeric'
         ]);
-
-        if ($validation->fails()) {
-            return response()->json([
-                'message' => 'error',
-                'errors' => $validation->errors()
-            ], 422);
-        }
 
         $macAddress = $request->mac_address;
         $waterLevel = $request->water_level;

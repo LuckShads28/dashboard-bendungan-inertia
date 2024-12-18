@@ -85,19 +85,28 @@ const DamDetails = ({
     const { errors } = usePage().props;
     const [damData, setDamData] = useState(dam);
     const [damHistoryData, setDamHistoryData] = useState(dam_history);
+    const [isUpdated, setIsUpdated] = useState(false);
 
     useEffect(() => {
         // Listen ke nama channel
         window.Echo.channel("dam-update").listen(
-            ".dam-log", // dapat dari broadcastAs di event, harus ada .chat
+            ".dam-log", // dapat dari broadcastAs di event, harus ada .
             (event: DamHistoryType) => {
                 setDamHistoryData((prevData) => {
-                    if (prevData.length === 5) {
-                        const shiftedData = prevData.slice(1);
-                        shiftedData.push(event);
-                        return shiftedData;
-                    }
-                    return [...prevData, event];
+                    const newData =
+                        prevData.length === 10
+                            ? [event, ...prevData.slice(0, 9)]
+                            : [event, ...prevData];
+
+                    setIsUpdated(true);
+
+                    setTimeout(() => {
+                        setIsUpdated(false);
+                    }, 250);
+
+                    console.log(newData);
+
+                    return newData;
                 });
                 setDamData((prevData) => ({
                     ...prevData,
@@ -160,7 +169,7 @@ const DamDetails = ({
                         <ChartContainer config={chartConfig} className="m-6">
                             <LineChart
                                 accessibilityLayer
-                                data={damHistoryData}
+                                data={damHistoryData.slice(0, 5)}
                                 margin={{
                                     left: 12,
                                     right: 12,
@@ -201,7 +210,7 @@ const DamDetails = ({
                         >
                             <LineChart
                                 accessibilityLayer
-                                data={damHistoryData}
+                                data={damHistoryData.slice(0, 5)}
                                 margin={{
                                     left: 12,
                                     right: 12,
@@ -282,7 +291,14 @@ const DamDetails = ({
                     {damHistoryData.length > 0 ? (
                         damHistoryData.map((item, index) => {
                             return (
-                                <TableRow key={index + 1}>
+                                <TableRow
+                                    key={index}
+                                    className={`transition-all ${
+                                        isUpdated && index == 0
+                                            ? "bg-primary animate-ping"
+                                            : ""
+                                    }`}
+                                >
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{item.water_height}</TableCell>
                                     <TableCell>{item.water_level}</TableCell>
