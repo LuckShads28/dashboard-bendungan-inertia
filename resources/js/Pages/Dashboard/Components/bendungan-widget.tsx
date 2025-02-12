@@ -92,10 +92,10 @@ export function BendunganWidget({ bendunganId }: { bendunganId: number }) {
                         </LineChart>
                     </ChartContainer>
                 </div>
-
+                {/*
                 <div className="flex items-center justify-center my-4 bg-blue-400 me-4 col">
                     Ini cuaca
-                </div>
+                </div> */}
             </div>
         </div>
     );

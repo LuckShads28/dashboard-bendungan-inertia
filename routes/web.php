@@ -24,6 +24,11 @@ Route::prefix('dashboard')->group(function () {
 
     Route::put('door-control', [DamController::class, 'doorControl'])->name('door.control');
 });
+Route::middleware('auth')->group(function () {
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+});
+
 
 Route::post("/send-message", function (Request $request) {
     // Broadcast the message to the lobby-chat channel

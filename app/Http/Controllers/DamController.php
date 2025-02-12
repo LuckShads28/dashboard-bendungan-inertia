@@ -84,7 +84,11 @@ class DamController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'mac_address' => 'required',
+            'name' => 'required',
+            'threshold' => 'required'
+        ]);
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Events\DamUpdateEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Dam;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class DamControllerApi extends Controller
@@ -15,7 +16,7 @@ class DamControllerApi extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'mac_address' => 'required|unique:dams,mac_address'
+            'mac_address' => 'required'
         ]);
 
         $dam = Dam::firstOrCreate(
@@ -36,21 +37,24 @@ class DamControllerApi extends Controller
     // Used for updating sensor data
     public function update(Request $request)
     {
+        Log::debug("Dam connected on ip: " . $request->ip());
+
         $request->validate([
             'mac_address' => 'required',
-            'water_level' => 'required|numeric',
-            'water_height' => 'required|numeric'
+            'water_height' => 'required|numeric',
         ]);
 
         $macAddress = $request->mac_address;
-        $waterLevel = $request->water_level;
+        $waterLevel = 0;
         $waterHeight = $request->water_height;
 
         $dam = Dam::firstWhere('mac_address', $macAddress);
 
         broadcast(new DamUpdateEvent($macAddress, $waterHeight, $waterLevel, $dam->threshold, $dam->door_status))->toOthers();
 
-        return response()->json(['message' => 'updated']);
+        return response()->json([
+            'message' => 'updated',
+        ]);
     }
 
     public function getDoorState($macAddress)

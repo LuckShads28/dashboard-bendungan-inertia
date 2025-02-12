@@ -25,6 +25,17 @@ import { Link, router } from "@inertiajs/react";
 import { route } from "ziggy-js";
 import { Loader2 } from "lucide-react"; // Assuming you're using Lucide icons.
 import { Badge } from "@/components/ui/badge";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
 
 type DamType = {
     id: number;
@@ -37,6 +48,9 @@ const DamPage = ({ dams }: { dams: DamType[] }) => {
     const [loading, setLoading] = useState<number | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedDam, setSelectedDam] = useState<DamType | null>(null);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+
+    const form = useForm();
 
     const handleDelete = () => {
         // if (selectedUser) {
@@ -53,10 +67,17 @@ const DamPage = ({ dams }: { dams: DamType[] }) => {
         // }
     };
 
-    const openDeleteDialog = (user: DamType) => {
+    const openDeleteDialog = (dam: DamType) => {
         // setSelectedUser(user);
         // setIsDialogOpen(true);
     };
+
+    const openEditDialog = (dam: DamType) => {
+        // setSelectedDam(dam);
+        // setIsEditOpen(true);
+    };
+
+    const handleEdit = () => {};
 
     return (
         <div className="m-4 space-y-4">
@@ -112,7 +133,12 @@ const DamPage = ({ dams }: { dams: DamType[] }) => {
                                                     View
                                                 </Button>
                                             </Link>
-                                            <Button className="bg-yellow-600">
+                                            <Button
+                                                className="bg-yellow-600"
+                                                onClick={() =>
+                                                    console.log("edit pressed")
+                                                }
+                                            >
                                                 Edit
                                             </Button>
                                             <Button
@@ -163,6 +189,55 @@ const DamPage = ({ dams }: { dams: DamType[] }) => {
                     </DialogFooter>
                 </DialogContent>
             </Dialog> */}
+
+            {/* Edit dialog */}
+            <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                <Form {...form}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Edit Dam</DialogTitle>
+                        </DialogHeader>
+                        <DialogContent>
+                            <form onSubmit={form.handleSubmit(handleEdit)}>
+                                <FormField
+                                    control={form.control}
+                                    name="name"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Dam Name</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="Bendungan 1"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                            </form>
+                        </DialogContent>
+                        <DialogFooter>
+                            <Button
+                                onClick={() => setIsDialogOpen(false)}
+                                className="bg-gray-500 hover:bg-gray-600"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                onClick={handleDelete}
+                                className="bg-red-600 hover:bg-red-700"
+                                disabled={loading === selectedDam?.id}
+                            >
+                                {loading === selectedDam?.id ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    "Delete"
+                                )}
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Form>
+            </Dialog>
         </div>
     );
 };

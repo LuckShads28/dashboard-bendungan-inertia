@@ -54,12 +54,6 @@ type DamType = {
     threshold: number;
 };
 
-// type DamHistoryType = {
-//     water_height: number;
-//     water_level: number;
-//     created_at: string;
-// };
-
 type DamHistoryType = {
     water_height: number;
     water_level: number;
@@ -103,8 +97,6 @@ const DamDetails = ({
                     setTimeout(() => {
                         setIsUpdated(false);
                     }, 250);
-
-                    console.log(newData);
 
                     return newData;
                 });
@@ -159,7 +151,7 @@ const DamDetails = ({
                     />
                 </div>
             </div>
-            <div className="grid gap-4 my-6 auto-rows-min md:grid-cols-3">
+            <div className="grid gap-4 my-6 auto-rows-min md:grid-cols-2">
                 <Card className="w-full bg-muted/50">
                     <CardHeader className="text-center">
                         <CardTitle>Water Height</CardTitle>
@@ -198,74 +190,19 @@ const DamDetails = ({
                         </ChartContainer>
                     </CardContent>
                 </Card>
-                <Card className="bg-muted/50">
-                    <CardHeader className="text-center">
-                        <CardTitle>Water Level</CardTitle>
-                        <CardDescription>Percentage (%)</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <ChartContainer
-                            config={chartConfig}
-                            className="m-6 h-3/6"
-                        >
-                            <LineChart
-                                accessibilityLayer
-                                data={damHistoryData.slice(0, 5)}
-                                margin={{
-                                    left: 12,
-                                    right: 12,
-                                }}
-                            >
-                                <CartesianGrid vertical={false} />
-
-                                <XAxis
-                                    dataKey="created_at"
-                                    tickLine={false}
-                                    axisLine={false}
-                                    tickMargin={8}
-                                    // tickFormatter={(value) => value.slice(0, 3)}
-                                    tickFormatter={(value, index) => {
-                                        // Display only the first three ticks
-                                        const maxTicks = 5;
-                                        if (index >= maxTicks) return "";
-                                        return value.slice(0, 5);
-                                    }}
-                                />
-                                <ChartTooltip
-                                    cursor={false}
-                                    content={<ChartTooltipContent hideLabel />}
-                                />
-                                <Line
-                                    dataKey="water_level"
-                                    type="natural"
-                                    stroke="var(--color-desktop)"
-                                    strokeWidth={2}
-                                    dot={false}
-                                />
-                            </LineChart>
-                        </ChartContainer>
-                    </CardContent>
-                </Card>
-                <Card className="bg-muted/50">
-                    <CardHeader className="text-center">
-                        <CardTitle>Weather Info</CardTitle>
-                        <CardDescription></CardDescription>
-                    </CardHeader>
-                    <CardContent></CardContent>
-                </Card>
             </div>
             <div className="grid gap-4 my-6 auto-rows-min md:grid-cols-4">
                 <InfoCardWidget
                     title="Ketinggian Air"
                     data={damData.water_height}
                 />
-                <InfoCardWidget
+                {/* <InfoCardWidget
                     title="Water Level"
                     data={`${damData.water_level}%`}
-                />
+                /> */}
                 <InfoCardWidget
                     title="Threshold"
-                    data={`${damData.threshold}%`}
+                    data={`${damData.threshold} cm`}
                 />
                 <InfoCardWidget
                     title="Door Status"
@@ -281,7 +218,7 @@ const DamDetails = ({
                     <TableRow>
                         <TableHead className="w-[50px]">No</TableHead>
                         <TableHead>Water Height</TableHead>
-                        <TableHead>Water Level</TableHead>
+                        {/* <TableHead>Water Level</TableHead> */}
                         <TableHead>Threshold</TableHead>
                         <TableHead>Door Status</TableHead>
                         <TableHead>Time</TableHead>
@@ -301,7 +238,7 @@ const DamDetails = ({
                                 >
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{item.water_height}</TableCell>
-                                    <TableCell>{item.water_level}</TableCell>
+                                    {/* <TableCell>{item.water_level}</TableCell> */}
                                     <TableCell>{item.threshold}</TableCell>
                                     <TableCell>
                                         {item.door_status
